@@ -1,0 +1,7 @@
+flex --header-file=scanner.h -o scanner.cpp Lexico.l 
+
+bison -o parser.cpp --defines=parser.h  Sintactico.y
+
+g++ main.cpp analizador/parser.cpp analizador/scanner.cpp -o main
+
+g++ main.cpp nodo.cpp analizador/*.cpp -o main
