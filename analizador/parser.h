@@ -52,27 +52,34 @@ extern int yydebug;
     mkdisk = 258,
     rmdisk = 259,
     fdisk = 260,
-    exec = 261,
-    size = 262,
-    fit = 263,
-    unit = 264,
-    path = 265,
-    type = 266,
-    name = 267,
-    del = 268,
-    add = 269,
-    bf = 270,
-    ff = 271,
-    wf = 272,
-    fast = 273,
-    full = 274,
-    igual = 275,
-    num = 276,
-    caracter = 277,
-    cadena = 278,
-    identificador = 279,
-    extension = 280,
-    ruta = 281
+    mount = 261,
+    unmount = 262,
+    rep = 263,
+    exec = 264,
+    size = 265,
+    fit = 266,
+    unit = 267,
+    path = 268,
+    type = 269,
+    name = 270,
+    del = 271,
+    add = 272,
+    id = 273,
+    bf = 274,
+    ff = 275,
+    wf = 276,
+    fast = 277,
+    full = 278,
+    mbr = 279,
+    disk = 280,
+    igual = 281,
+    num = 282,
+    caracter = 283,
+    cadena = 284,
+    identificador = 285,
+    extension = 286,
+    ruta = 287,
+    pausa = 288
   };
 #endif
 
@@ -85,7 +92,7 @@ union YYSTYPE
     char text [400];
     class Nodo *nodo;
 
-#line 89 "parser.h"
+#line 96 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

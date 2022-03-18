@@ -25,6 +25,9 @@
 %token <text> mkdisk
 %token <text> rmdisk
 %token <text> fdisk
+%token <text> mount
+%token <text> unmount
+%token <text> rep
 %token <text> exec
 %token <text> size
 %token <text> fit
@@ -34,11 +37,14 @@
 %token <text> name
 %token <text> del
 %token <text> add
+%token <text> id
 %token <text> bf
 %token <text> ff
 %token <text> wf
 %token <text> fast
 %token <text> full
+%token <text> mbr
+%token <text> disk
 
 %token <text> igual
 %token <text> num
@@ -48,14 +54,21 @@
 %token <text> extension
 %token <text> ruta
 
+%token <text> pausa
+
 %type <nodo> INICIO
 %type <nodo> COMANDO
 %type <nodo> MKDISK
 %type <nodo> PARAMETRO_MK
+%type <nodo> AJUSTE
 %type <nodo> RMDISK
 %type <nodo> FDISK
 %type <nodo> PARAMETRO_FK
-%type <nodo> AJUSTE
+%type <nodo> MOUNT
+%type <nodo> PARAMETRO_M
+%type <nodo> UNMOUNT
+%type <nodo> REP
+%type <nodo> PARAMETRO_R
 %type <nodo> SCRIPT
 
 %start INICIO
@@ -72,7 +85,18 @@ COMANDO: mkdisk MKDISK {
         $$ = new Nodo("FDISK", "");
         $$->add(*$2);
     }
-    | SCRIPT {$$ = $1;};
+    | mount MOUNT {
+        $$ = new Nodo("MOUNT", "");
+        $$->add(*$2);
+    }
+    | UNMOUNT { $$ = $1; }
+    | rep REP { 
+        $$ = new Nodo("REP", "");
+        $$->add(*$2);
+    }
+    | SCRIPT {$$ = $1;}
+    | pausa {$$ = new Nodo("PAUSE", "");}
+    ;
 
 MKDISK: MKDISK PARAMETRO_MK {
         $$ = $1;
@@ -91,6 +115,10 @@ PARAMETRO_MK: size igual num {$$ = new Nodo("size", $3);}
     | unit igual caracter {$$ = new Nodo("unit", $3);}
     | path igual cadena {$$ = new Nodo("path", $3);}
     | path igual ruta {$$ = new Nodo("path", $3);};
+
+AJUSTE: bf {$$ = new Nodo("ajuste", "bf");}
+    | ff {$$ = new Nodo("ajuste", "ff");}
+    | wf {$$ = new Nodo("ajuste", "wf");};
 
 RMDISK: rmdisk path igual ruta {
         $$ = new Nodo("RMDISK", "");
@@ -120,9 +148,40 @@ PARAMETRO_FK: PARAMETRO_MK { $$ = $1; }
     | name igual cadena { $$ = new Nodo("name", $3); }
     | add igual num { $$ = new Nodo("add", $3); };
 
-AJUSTE: bf {$$ = new Nodo("ajuste", "bf");}
-    | ff {$$ = new Nodo("ajuste", "ff");}
-    | wf {$$ = new Nodo("ajuste", "wf");};
+MOUNT: MOUNT PARAMETRO_M {
+        $$ = $1;
+        $$->add(*$2);
+    }
+    | PARAMETRO_M {
+        $$ = new Nodo("PARAMETRO", "");
+        $$->add(*$1);
+    };
+
+PARAMETRO_M: path igual cadena { $$ = new Nodo("path", $3); }
+    | path igual ruta { $$ = new Nodo("path", $3); }
+    | name igual identificador { $$ = new Nodo("name", $3); }
+    | name igual cadena { $$ = new Nodo("name", $3); };
+
+UNMOUNT: unmount id igual identificador {
+        $$ = new Nodo("UNMOUNT", "");
+        Nodo *n = new Nodo("id", $4);
+        $$->add(*n);
+    }
+
+REP: REP PARAMETRO_R {
+        $$ = $1;
+        $$->add(*$2);
+    }
+    | PARAMETRO_R {
+        $$ = new Nodo("PARAMETRO", "");
+        $$->add(*$1);
+    };
+
+PARAMETRO_R: name igual mbr { $$ = new Nodo("name", "mbr"); }
+    | name igual disk { $$ = new Nodo("name", "disk"); }
+    | path igual cadena{ $$ = new Nodo("path", $3); }
+    | path igual ruta { $$ = new Nodo("path",$3); }                 
+    | id igual identificador { $$ = new Nodo("id", $3); };
 
 SCRIPT: exec path igual cadena {
         $$ = new Nodo("EXEC", "");

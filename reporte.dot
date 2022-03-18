@@ -1,0 +1,19 @@
+digraph G{
+
+  tbl [
+    shape=box
+    label=<
+     <table border='0' cellborder='2' width='600' height="200" color='orange'>
+     <tr>
+     <td height='200' width='100'> <b>MBR</b> </td>
+     <td height='200' width='20.0'>Primaria <br/> Ocupa: 4.0%</td>
+     <td height='200' width='30.0'>Libre<br/> Ocupa: 6.0%</td>
+     <td height='200' width='10.0'>Primaria <br/> Ocupa: 2.0%</td>
+     <td height='200' width='100.0'>Primaria <br/> Ocupa: 20.0%</td>
+     <td height='200' width='-155.0'>Primaria <br/> Ocupa: -31.0%</td>
+     <td height='200' width='90.0'>Libre<br/> Ocupa: 18.0%</td>
+     </tr> 
+     </table>        
+>];
+
+}

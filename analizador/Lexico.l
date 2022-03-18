@@ -18,17 +18,25 @@
 entero -?[0-9]+
 letra [a-zA-Z]
 caracter ({letra}|{entero})
-id {letra}({letra}|{entero}|"_")*
+id ({letra}|{entero}|"_")+
 cadena "\""[^"\""]*"\""
 extension "."{id}
 diagonal "/"
 ruta ({diagonal}{id})+({diagonal}{id}{extension})
 
+%x COM
+
 %%
+INITIAL
 {
+    "#"         { BEGIN COM; }
+
     "mkdisk"    { return mkdisk; }
     "rmdisk"    { return rmdisk; }
     "fdisk"     { return fdisk; }
+    "mount"     { return mount; }
+    "unmount"   { return unmount; }
+    "rep"       { return rep; }
     "exec"      { return exec; }
     "-size"     { return size; }
     "-fit"      { return fit; }
@@ -38,11 +46,16 @@ ruta ({diagonal}{id})+({diagonal}{id}{extension})
     "-name"     { return name; }
     "-delete"   { return del; }
     "-add"      { return add; }
+    "-id"       { return id; }
     "bf"        { return bf; }
     "ff"        { return ff; }
     "wf"        { return wf; }
     "Fast"      { return fast; }
     "Full"      { return full; }
+    "mbr"       { return mbr; }
+    "disk"      { return disk; }
+
+    "pause"     { return pausa; }
 
     "="         {return igual;}
 
@@ -58,4 +71,8 @@ ruta ({diagonal}{id})+({diagonal}{id}{extension})
     .           {cout<<"Error lexico, no se esperaba token:"<<yytext<<endl;}
 
 }
+
+<COM>"\n"        { BEGIN INITIAL; };
+<COM>.           { };
+
 %%

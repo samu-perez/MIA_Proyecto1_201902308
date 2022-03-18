@@ -19,7 +19,7 @@ void RMDISK(Nodo *raiz){
         if(opcion == "Y" || opcion == "y"){
             string comando = "rm \"" + path + "\"";
             system(comando.c_str());
-            cout << "Disco eliminado" << endl;
+            cout << "*Disco eliminado con exito*" << endl;
         }else if(opcion == "N" || opcion == "n"){
             cout << "Cancelado" << endl;;
         }else{
@@ -27,6 +27,6 @@ void RMDISK(Nodo *raiz){
         }
         fclose(fp);
     } else {
-        cout << "No existe el disco a eliminar" << endl;
+        cout << "ERROR: no existe el disco a eliminar" << endl;
     }
 }

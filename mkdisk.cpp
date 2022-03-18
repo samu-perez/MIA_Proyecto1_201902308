@@ -1,17 +1,14 @@
 #include <iostream>
 #include <list>
-#include <string>
 #include <regex>
 
 #include "nodo.h"
-//#include "struct.cpp"
 using namespace std;
 
 void crearArchivo(string direccion);
 string directorio(string direccion);
 
 void MKDISK(Nodo *raiz){
-    cout<<raiz->tipo<<endl;
     int size = 0;
     char fit = 0;
     char unit = 0;
@@ -19,7 +16,7 @@ void MKDISK(Nodo *raiz){
 
     list<Nodo> :: iterator it;
     for(it = raiz->hijos.begin(); it != raiz->hijos.end(); ++it){
-        cout<<it->tipo<<"-"<<it->valor<<endl;
+        //cout<<it->tipo<<"-"<<it->valor<<endl;
 
         if(it->tipo == "size"){
             size = stoi(it->valor);
@@ -42,9 +39,7 @@ void MKDISK(Nodo *raiz){
         } else if(it->tipo == "path"){
             path = it->valor;
             path = regex_replace(path, regex("\""), "");
-            cout<<"PATHH "<<path<<endl;
             path = regex_replace(path, regex("/home/"), "/home/samuel/Escritorio/");
-            cout<<"REPATHH "<<path<<endl;
         }
     }
 
@@ -88,19 +83,17 @@ void MKDISK(Nodo *raiz){
     fwrite(&masterboot, sizeof(MBR), 1, fp);
     fclose(fp);
 
+    cout << endl << "*Disco creado con exito*" << endl;
+
 }
 
 void crearArchivo(string direccion){
     string aux = directorio(direccion);
-    cout<<aux<<endl;
     string comando = "sudo mkdir -p \'" + aux + "\'";
-    //string comando = "mkdir -p \'" + aux + "\'";
     system(comando.c_str());
     string comando2 = "sudo chmod -R 777 \'" + aux + "\'";
-    //string comando2 = "chmod -R 755 \'" + aux + "\'";
     system(comando2.c_str());
     string arch = direccion;
-    cout<<"ARCH "<< arch<<endl;
     FILE *fp = fopen(arch.c_str(), "wb");
     if((fp = fopen(arch.c_str(), "wb")))
         fclose(fp);
