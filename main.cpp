@@ -13,8 +13,12 @@
 #include "listaMount.cpp"
 #include "mount-unmount.cpp"
 #include "rep-exec.cpp"
+#include "mkfs.cpp"
+#include "login.cpp"
 
 ListaMount *listaMount = new ListaMount();
+bool loggedin= false;
+Sesion sesionActual;
 
 extern int yyparse();
 extern Nodo *raiz; //Raiz del arbol
@@ -72,9 +76,22 @@ void reconocerComando(Nodo *raiz){
         
     } else if(raiz->tipo == "EXEC"){
         EXEC(raiz);
+
+    } else if(raiz->tipo == "MKFS"){
+        Nodo n = raiz->hijos.front();
+        MKFS(&n);
+
+    } else if(raiz->tipo == "LOGIN"){
+        Nodo n = raiz->hijos.front();
+        LOGIN(&n);
+
+    } else if(raiz->tipo == "LOGOUT"){
+        LOGOUT();
+
     } else if(raiz->tipo == "PAUSE"){
         cout<<"Presione Enter para continuar..." <<endl;
         cin.get();
+        
     } else{
         cout<<"Comando no reconocido"<<endl;
     }

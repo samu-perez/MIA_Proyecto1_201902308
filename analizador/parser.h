@@ -79,7 +79,17 @@ extern int yydebug;
     identificador = 285,
     extension = 286,
     ruta = 287,
-    pausa = 288
+    mkfs = 288,
+    login = 289,
+    logout = 290,
+    pausa = 291,
+    fs = 292,
+    fs2 = 293,
+    fs3 = 294,
+    usuario = 295,
+    password = 296,
+    pwd = 297,
+    sb = 298
   };
 #endif
 
@@ -92,7 +102,7 @@ union YYSTYPE
     char text [400];
     class Nodo *nodo;
 
-#line 96 "parser.h"
+#line 106 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

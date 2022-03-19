@@ -86,7 +86,7 @@ void graficarMBR(string direccion, string destino, string extension){
         fclose(fp);
         string comando = "dot -T"+ extension +" reporte.dot -o " + destino;
         system(comando.c_str());
-        cout << "*Reporte generado con exito*" << endl;
+        cout << "*Reporte MBR generado con exito*" << endl;
     } else cout <<"ERROR: reporte no generado"<<endl;
 }
 
@@ -194,20 +194,66 @@ void graficarDisk(string direccion, string destino, string extension){
                             }
                         }
                     }
-                }else{//Espacio no asignado
+                }else{  //Espacio no asignado
                      fprintf(graphDot,"     <td height=\'200\' width=\'%.1f\'>Libre <br/> Ocupa: %.1f%c</td>\n", porcentaje_aux, porcentaje_real,'%');
                 }
             }
         }
-        //fprintf(graphDot,"     <td height='200'> ESPACIO LIBRE <br/> Ocupado: %.1f%c\n     </td>",(100-espacioUsado),'%');
 
         fprintf(graphDot,"     </tr> \n     </table>        \n>];\n\n}");
         fclose(graphDot);
         fclose(fp);
         string comando = "dot -T" + extension + " reporte.dot -o " + destino;
         system(comando.c_str());
-        cout << "*Reporte generado con exito*" << endl;
+        cout << "*Reporte Disk generado con exito*" << endl;
     } else{
         cout << "ERROR: disco no encontrado" << endl;
     }
+}
+
+void graficarSuperBloque(string direccion, string destino, string extension, int startSuper){
+    FILE* fp = fopen(direccion.c_str(),"r");
+
+    SuperBloque super;
+
+    fseek(fp, startSuper, SEEK_SET);
+    fread(&super, sizeof(super), 1, fp);
+
+    FILE *graph = fopen("reporte.dot","w");
+    fprintf(graph,"digraph G{\n");
+    fprintf(graph, "    nodo [shape=none, fontname=\"Century Gothic\" label=<");
+    fprintf(graph, "   <table border=\'0\' cellborder='1\' cellspacing=\'0\' bgcolor=\"yellow\">");
+    fprintf(graph, "    <tr> <td COLSPAN=\'2\'> <b>SuperBloque</b> </td></tr>\n");
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_filesystem_type </td> <td bgcolor=\"white\"> %d </td> </tr>\n",super.s_filesystem_type);
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_inodes_count </td> <td bgcolor=\"white\"> %d </td> </tr>\n",super.s_inodes_count);
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_blocks_count </td> <td bgcolor=\"white\"> %d </td> </tr>\n",super.s_blocks_count);
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_free_block_count </td> <td bgcolor=\"white\"> %d </td> </tr>\n",super.s_free_blocks_count);
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_free_inodes_count </td> <td bgcolor=\"white\"> %d </td> </tr>\n",super.s_free_inodes_count);
+    struct tm *tm;
+    char fecha[100];
+    tm = localtime(&super.s_mtime);
+    strftime(fecha,100,"%d/%m/%y %H:%S",tm);
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_mtime </td> <td bgcolor=\"white\"> %s </td></tr>\n",fecha);
+    tm = localtime(&super.s_umtime);
+    strftime(fecha, 100,"%d/%m/%y %H:%S",tm);
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_umtime </td> <td bgcolor=\"white\"> %s </td> </tr>\n",fecha);
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_mnt_count </td> <td bgcolor=\"white\"> %d </td> </tr>\n",super.s_mnt_count);
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_magic </td> <td bgcolor=\"white\"> %d </td> </tr>\n",super.s_magic);
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_inode_size </td> <td bgcolor=\"white\"> %d </td> </tr>\n",super.s_inode_size);
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_block_size </td> <td bgcolor=\"white\"> %d </td> </tr>\n",super.s_block_size);
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_first_ino </td> <td bgcolor=\"white\"> %d </td> </tr>\n",super.s_first_ino);
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_first_blo </td> <td bgcolor=\"white\"> %d </td> </tr>\n",super.s_first_blo);
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_bm_inode_start </td> <td bgcolor=\"white\"> %d </td></tr>\n",super.s_bm_inode_start);
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_bm_block_start </td> <td bgcolor=\"white\"> %d </td> </tr>\n",super.s_bm_block_start);
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_inode_start </td> <td bgcolor=\"white\"> %d </td> </tr>\n",super.s_inode_start);
+    fprintf(graph, "    <tr> <td bgcolor=\"aquamarine\"> s_block_start </td> <td bgcolor=\"white\"> %d </td> </tr>\n",super.s_block_start);
+    fprintf(graph, "   </table>>]\n");
+    fprintf(graph,"\n}");
+    fclose(graph);
+
+    fclose(fp);
+
+    string comando = "dot -T" + extension + " reporte.dot -o " + destino;
+    system(comando.c_str());
+    cout << "*Reporte SuperBloque generado con exito*" << endl;
 }

@@ -17,6 +17,7 @@ class ListaMount{
         int buscarLetra(string, string);
         int buscarNumero(string, string);
         string direccion(string);
+        NodoMount* getMount(string id);
 };
 
 ListaMount:: ListaMount(){
@@ -129,5 +130,18 @@ string ListaMount:: direccion(string id){
     }
     return "NULL";
 }
+
+NodoMount* ListaMount:: getMount(string id){
+    NodoMount *aux = primero;
+    while(aux != NULL){
+        string tempID = "08" + to_string(aux->num) + aux->letra;
+        if(id == tempID){
+            return aux;
+        }
+        aux = aux->siguiente;
+    }
+    return NULL;
+}
+
 
 #endif // LISTAMOUNT

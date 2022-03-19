@@ -54,7 +54,17 @@
 %token <text> extension
 %token <text> ruta
 
+%token <text> mkfs
+%token <text> login
+%token <text> logout
 %token <text> pausa
+%token <text> fs
+%token <text> fs2
+%token <text> fs3
+%token <text> usuario
+%token <text> password
+%token <text> pwd
+%token <text> sb
 
 %type <nodo> INICIO
 %type <nodo> COMANDO
@@ -70,6 +80,11 @@
 %type <nodo> REP
 %type <nodo> PARAMETRO_R
 %type <nodo> SCRIPT
+
+%type <nodo> MKFS
+%type <nodo> PARAM_MKFS
+%type <nodo> LOGIN
+%type <nodo> PARAM_LOGIN
 
 %start INICIO
 
@@ -95,6 +110,15 @@ COMANDO: mkdisk MKDISK {
         $$->add(*$2);
     }
     | SCRIPT {$$ = $1;}
+    | mkfs MKFS {
+        $$ = new Nodo("MKFS", "");
+        $$->add(*$2);
+    }
+    | login LOGIN {
+        $$ = new Nodo("LOGIN", "");
+        $$->add(*$2);
+    }
+    | logout { $$ = new Nodo("LOGOUT", ""); }
     | pausa {$$ = new Nodo("PAUSE", "");}
     ;
 
@@ -179,6 +203,7 @@ REP: REP PARAMETRO_R {
 
 PARAMETRO_R: name igual mbr { $$ = new Nodo("name", "mbr"); }
     | name igual disk { $$ = new Nodo("name", "disk"); }
+    | name igual sb { $$ = new Nodo("name", "sb"); }
     | path igual cadena{ $$ = new Nodo("path", $3); }
     | path igual ruta { $$ = new Nodo("path",$3); }                 
     | id igual identificador { $$ = new Nodo("id", $3); };
@@ -193,3 +218,35 @@ SCRIPT: exec path igual cadena {
         Nodo *path = new Nodo("path", $4);
         $$->add(*path);
     }; 
+
+MKFS: MKFS PARAM_MKFS {
+        $$ = $1;
+        $$->add(*$2);
+    }
+    | PARAM_MKFS {
+        $$ = new Nodo("PARAMETRO", "");
+        $$->add(*$1);
+    };
+
+PARAM_MKFS: id igual identificador { $$ = new Nodo("id", $3); }
+    | type igual fast { $$ = new Nodo("type", "fast"); }
+    | type igual full { $$ = new Nodo("type", "full"); }
+    | fs igual fs2 { $$ = new Nodo("fs", "2fs"); }
+    | fs igual fs3 { $$ = new Nodo("fs", "3fs"); };
+
+LOGIN: LOGIN PARAM_LOGIN {
+        $$ = $1;
+        $$->add(*$2);
+    }
+    | PARAM_LOGIN {
+        $$ = new Nodo("PARAMETRO", "");
+        $$->add(*$1);
+    };
+
+PARAM_LOGIN: usuario igual identificador { $$ = new Nodo("usuario", $3); }
+    | usuario igual cadena { $$ = new Nodo("usuario", $3); }
+    | password igual num { $$ = new Nodo("password", $3); }
+    | password igual identificador { $$ = new Nodo("password", $3); }
+    | password igual pwd { $$ = new Nodo("password", $3); }
+    | password igual cadena { $$ = new Nodo("password", $3); }
+    | id igual identificador { $$ = new Nodo("id", $3); };

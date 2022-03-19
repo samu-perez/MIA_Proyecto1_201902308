@@ -47,8 +47,32 @@ void REP(Nodo *raiz){
                     system(comando2.c_str());
                     if(name == "mbr"){
                         graficarMBR(direccion, path, ext);
+
                     } else if(name == "disk"){
                         graficarDisk(direccion, path, ext);
+
+                    } else if(name == "sb"){
+                        NodoMount *aux = listaMount->getMount(id);
+                        int indice = buscarParticionPE(aux->direccion, aux->nombre);
+                        if(indice != -1){    //Primaria|Extendida
+                            MBR masterboot;
+                            FILE *fp = fopen(aux->direccion.c_str(),"rb+");
+                            fread(&masterboot, sizeof(MBR), 1, fp);
+                            fseek(fp, masterboot.mbr_partition[indice].part_start, SEEK_SET);
+                            fclose(fp);
+                            graficarSuperBloque(aux->direccion, path, ext, masterboot.mbr_partition[indice].part_start);
+                        }else{
+                            int indice = buscarParticionL(aux->direccion, aux->nombre);
+                            if(indice != -1){
+                                EBR extendedBoot;
+                                FILE *fp = fopen(aux->direccion.c_str(),"rb+");
+                                fseek(fp, indice, SEEK_SET);
+                                fread(&extendedBoot, sizeof(EBR), 1, fp);
+                                int start = static_cast<int>(ftell(fp));
+                                fclose(fp);
+                                graficarSuperBloque(aux->direccion, path, ext, start);
+                            }
+                        }
                     }
                 } else{
                     cout << "ERROR: no se encuentra la particion" << endl;

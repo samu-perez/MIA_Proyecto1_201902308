@@ -23,6 +23,7 @@ cadena "\""[^"\""]*"\""
 extension "."{id}
 diagonal "/"
 ruta ({diagonal}{id})+({diagonal}{id}{extension})
+pwd ({letra}|{entero}|[!$@+*])+
 
 %x COM
 
@@ -54,9 +55,18 @@ INITIAL
     "Full"      { return full; }
     "mbr"       { return mbr; }
     "disk"      { return disk; }
-
-    "pause"     { return pausa; }
-
+ 
+    "mkfs"       { return mkfs; }
+    "login"      { return login; }
+    "logout"     { return logout; }
+    "pause"      { return pausa; }
+    "-fs"        { return fs; }
+    "2fs"        { return fs2; }
+    "3fs"        { return fs3; }
+    "-usuario"   { return usuario; }
+    "-password"  { return password; }
+    "sb"         { return sb; }
+    
     "="         {return igual;}
 
     {entero}    {strcpy(yylval.text, yytext); return num;}
@@ -65,6 +75,7 @@ INITIAL
     {id}        {strcpy(yylval.text, yytext); return identificador;}
     {ruta}      {strcpy(yylval.text, yytext); return ruta;}
     {extension} {strcpy(yylval.text, yytext); return extension;}
+    {pwd}  {strcpy(yylval.text, yytext); return pwd;}
 
     [[:blank:]] {}
 

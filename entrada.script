@@ -45,3 +45,13 @@ mount -path="/home/mia/primer semestre/entrada1/Disco3.dk" -name=Particion3 #623
 #reporte
 rep -id=081a -Path=/home/mia/reportes/mbr1.jpg -name=mbr
 rep -id=081a -Path=/home/mia/reportes/disco1.jpg -name=disk
+
+#sistema de archivos ext2
+mkfs -type=fast -id=081a
+
+rep -id=081a -Path="/home/mia/reportes/ext2_sb_1.pdf" -name=sb
+
+pause
+
+#login 
+Login -password=123 -usuario=root -id=081a

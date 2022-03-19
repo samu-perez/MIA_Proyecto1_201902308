@@ -1,19 +1,22 @@
 digraph G{
-
-  tbl [
-    shape=box
-    label=<
-     <table border='0' cellborder='2' width='600' height="200" color='orange'>
-     <tr>
-     <td height='200' width='100'> <b>MBR</b> </td>
-     <td height='200' width='20.0'>Primaria <br/> Ocupa: 4.0%</td>
-     <td height='200' width='30.0'>Libre<br/> Ocupa: 6.0%</td>
-     <td height='200' width='10.0'>Primaria <br/> Ocupa: 2.0%</td>
-     <td height='200' width='100.0'>Primaria <br/> Ocupa: 20.0%</td>
-     <td height='200' width='-155.0'>Primaria <br/> Ocupa: -31.0%</td>
-     <td height='200' width='90.0'>Libre<br/> Ocupa: 18.0%</td>
-     </tr> 
-     </table>        
->];
+    nodo [shape=none, fontname="Century Gothic" label=<   <table border='0' cellborder='1' cellspacing='0' bgcolor="yellow">    <tr> <td COLSPAN='2'> <b>SuperBloque</b> </td></tr>
+    <tr> <td bgcolor="aquamarine"> s_filesystem_type </td> <td bgcolor="white"> 2 </td> </tr>
+    <tr> <td bgcolor="aquamarine"> s_inodes_count </td> <td bgcolor="white"> 6990 </td> </tr>
+    <tr> <td bgcolor="aquamarine"> s_blocks_count </td> <td bgcolor="white"> 20970 </td> </tr>
+    <tr> <td bgcolor="aquamarine"> s_free_block_count </td> <td bgcolor="white"> 20968 </td> </tr>
+    <tr> <td bgcolor="aquamarine"> s_free_inodes_count </td> <td bgcolor="white"> 6988 </td> </tr>
+    <tr> <td bgcolor="aquamarine"> s_mtime </td> <td bgcolor="white"> 18/03/22 22:56 </td></tr>
+    <tr> <td bgcolor="aquamarine"> s_umtime </td> <td bgcolor="white"> 31/12/69 18:00 </td> </tr>
+    <tr> <td bgcolor="aquamarine"> s_mnt_count </td> <td bgcolor="white"> 0 </td> </tr>
+    <tr> <td bgcolor="aquamarine"> s_magic </td> <td bgcolor="white"> 61267 </td> </tr>
+    <tr> <td bgcolor="aquamarine"> s_inode_size </td> <td bgcolor="white"> 104 </td> </tr>
+    <tr> <td bgcolor="aquamarine"> s_block_size </td> <td bgcolor="white"> 64 </td> </tr>
+    <tr> <td bgcolor="aquamarine"> s_first_ino </td> <td bgcolor="white"> 2 </td> </tr>
+    <tr> <td bgcolor="aquamarine"> s_first_blo </td> <td bgcolor="white"> 2 </td> </tr>
+    <tr> <td bgcolor="aquamarine"> s_bm_inode_start </td> <td bgcolor="white"> 216 </td></tr>
+    <tr> <td bgcolor="aquamarine"> s_bm_block_start </td> <td bgcolor="white"> 7206 </td> </tr>
+    <tr> <td bgcolor="aquamarine"> s_inode_start </td> <td bgcolor="white"> 28176 </td> </tr>
+    <tr> <td bgcolor="aquamarine"> s_block_start </td> <td bgcolor="white"> 755136 </td> </tr>
+   </table>>]
 
 }
